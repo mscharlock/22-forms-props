@@ -74,8 +74,16 @@ class App extends React.Component {
     return(
       <section className="application">
         <h1>Helloooooo</h1>
-        <
-    )
-  }
+        <SearchForm
+        topicSelect = {this.topicStateShow} />
 
+        { this.state.results.length ?
+          <h2>Selected: {this.state.results.length}</h2>
+          : <div>
+          <p>Make a request</p>
+          </div>
+        }
+        </section>
+    );
+  }
 }
