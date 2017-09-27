@@ -36,7 +36,6 @@ class SearchForm extends React.Component {
     this.state = {
       topic: '',
     }
-  }
 
 this.handleSubmit = this.handleSubmit.bind(this)
 this.handleChange = this.handleChange.bind(this)
@@ -86,34 +85,39 @@ class App extends React.Component {
       let response = res.body
     })
   }
-  // componentDidMount() {
-  //   if(topicLookup) {
-  //     try {
-  //       let topicLookup = JSON.parse(topicLookup)
-  //       this.setState({ topicLookup })
-  //     } catch(e) {
-  //       console.error(e)
-  //     }
-  //   } else {
-  //     superagent.get(`${API_URL}`)
-  //     .then(res => {
-  //       let topicLookup = res.body.results((allTopics, searchedTerm) => {
-  //         allTopics[searchedTerm.name] = n.url??? //I don't know//
-  //         return topicLookup;
-  //       })
-  //     })
-    }
-  }
-
-  try{
-
-  }
+//   componentDidMount() {
+//     if(topicLookup) {
+//       try {
+//         let topicLookup = JSON.parse(topicLookup)
+//         this.setState({ topicLookup })
+//       } catch(e) {
+//         console.error(e)
+//       }
+//     } else {
+//       superagent.get(`${API_URL}`)
+//       .then(res => {
+//         let topicLookup = res.body.results((allTopics, searchedTerm) => {
+//           allTopics[searchedTerm.name] = n.url //I don't know//
+//           return topicLookup;
+//         })
+//       })
+//
+//   try{
+//
+//   } catch(e) {
+//
+//   }
+//   .catch(e){
+//
+//   }
+// }
+// }
 
   render() {
     return (
     //something//
     <h1>Reddit Scraper<h1>
-    // <SearchForm
+    <SearchForm />
 
     )
   }
