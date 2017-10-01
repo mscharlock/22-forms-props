@@ -3,7 +3,6 @@ import ReactDom from 'react-dom';
 import superagent from 'superagent';
 
 const API_URL =  `http://www.reddit.com/r/`;
-//${searchFormBoard}.json?limit=${searchFormLimit}
 
 class SearchForm extends React.Component {
   constructor(props) {
@@ -63,6 +62,8 @@ class SearchForm extends React.Component {
   }
 }
 
+
+//We needed a SearchResultsList as a separate component that stored stuff instead of jamming it all inside of app.//
 class SearchResultList extends React.Component {
   constructor(props) {
     super(props);
@@ -78,12 +79,18 @@ class SearchResultList extends React.Component {
           {this.props.results.map((item, i) => {
             return(
               <li key={i}>
-                <a 
-            )
+                <a href={item.data.url}>
+                  <h2>{item.data.ttitle}</h2>
+                </a>
+                  <span>Upvoted: {item.data.ups}</span>
+              </li>);
           })}
-        :
+        </ul>
+        : //OR//
+        <h2>Sorry, no results to show</h2>
       }
-    )
+      </section>
+    );
   }
 }
 
@@ -92,10 +99,9 @@ class App extends React.Component {
     super(props);
     this.state = {
       topicLookup: [], //this will be search results list?
-      topicSelected: {}, //we pick one in there to show & that's the one that we put into text input in Search Form
       topicError: null,
     };
-    this.topicStateShow = this.topicStateShow.bind(this);
+    this.redditTopicFetch = this.redditTopicFetch.bind(this);
   }
 
   componentDidUpdate() {
@@ -103,12 +109,16 @@ class App extends React.Component {
   }
 
 //Thank you to Said and Kyle
-  redditTopicFetch(searchFormBoard, searchFormLimit) {
-    superagent.get(`${API_URL}/${searchFormBoard}.json?limit=${searchFormLimit}`)
+  redditTopicFetch(searchTopic, searchLimit) {
+    superagent.get(`${API_URL}/${searchTopic}.json?limit=${searchLimit}`)
     .then(res => {
-      console.log('request success', res.body.data.children.data.url); //that's where our stuff lives
+      console.log('request success');
+
+      //Note that the data we are trying to get lives in res.body.data.children.data.url/etc//
+
+      let sortedTopics = res.body.children.sort((a,b) => b.data.ups - a.data.ups);
       this.setState({
-        results: res.body.data.children, //maybe think about what is being returned here, we have to get the children so we can access the stuff on them
+        topics: sortedTopics,
         searchErrorMessage: null,
       });
     })
@@ -116,7 +126,7 @@ class App extends React.Component {
     console.error(err);
     this.setState({
       results: null,
-      searchErrorMessage:'NOPE',
+      searchErrorMessage:'No Topics to Display',
     });
   });
   }
@@ -124,17 +134,14 @@ class App extends React.Component {
   render(){
     return(
       <section className="application">
-        <h1>Helloooooo</h1>
+        <h1>HUZZAH</h1>
         <SearchForm
-        topicSelect = {this.topicStateShow} />
-
-        { this.state.results.length ?
-          <h2>Selected: {this.state.results.length}</h2>
-          : <div>
-          <p>Make a request</p>
-          </div>
-        }
-        </section>
+        topicSelect = {this.redditTopicFetch} />
+        <SearchResultsList results = {this.state.topicLookup}/>
+      </section>
     );
   }
 }
+
+//DON'T FORGET TO RENDER//
+ReactDom.render(<App />, document.getElementById('root'));
