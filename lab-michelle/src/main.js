@@ -10,30 +10,80 @@ class SearchForm extends React.Component {
     super(props);
     this.state = {
       topic: '',
+      limit: 100,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleLimitChange = this.handleLimitChange.bind(this);
+    this.handleTopicChange = this.handleTopicChange.bind(this);
+  }
+
+
+  componentDidMount() {
+    console.log('__FORM_PROPS__', this.props);
+    console.log('__FORM_STATE__', this.state);
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.topicSelect(this.state.topic); //this name might be wacky
+    this.props.topicSelect(this.state.topic, this.state.limit);
+  }
+
+  handleTopicChange(e) {
+    this.setState({topic: e.target.value});
+  }
+
+  handleLimitChange(e) {
+    this.setState({limit: e.target.value});
   }
 
   render() {
     return (
       <form className="searchForm"
       onSubmit = {this.handleSubmit}>
+
       <input
         type="text"
         placeholder="Type in a topic"
         value = {this.state.topic}
-        onChange = {this.handleChange}
+        onChange = {this.handleTopicChange}
         />
-        <button type="submit">Clicky clicky</button>
+
+      <input
+        type="number"
+        min = "0"
+        max = "100"
+        placeholder = "100"
+        value = {this.handleLimitChange}
+        />
+
+        <button type="submit">Click to search</button>
         </form>
     );
+  }
+}
+
+class SearchResultList extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return(
+      <section className="results list">
+      //if there are results, then show them but if not give an err//
+
+      {this.props.results ?
+        <ul>
+          {this.props.results.map((item, i) => {
+            return(
+              <li key={i}>
+                <a 
+            )
+          })}
+        :
+      }
+    )
   }
 }
 
